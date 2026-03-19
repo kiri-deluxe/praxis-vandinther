@@ -1,0 +1,13 @@
+{
+  "termin": [
+    { "days": "Mo–Fr", "hours": "08:30–10:00" },
+    { "days": "Mo, Di, Do", "hours": "16:00–17:00" }
+  ],
+  "ohneTermin": [
+    { "days": "Mo–Fr", "hours": "10:00–11:00" },
+    { "days": "Mo, Di, Do", "hours": "17:00–18:00" }
+  ],
+  "infekt": [
+    { "days": "Mo–Do", "hours": "11:00–12:00", "note": "Nur mit FFP2-Maske" }
+  ]
+}

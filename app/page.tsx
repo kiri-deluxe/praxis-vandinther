@@ -1,65 +1,104 @@
-import Image from "next/image";
+import type { Metadata } from 'next'
+import DoctolibButton from '@/components/DoctolibButton'
+import OpeningHours from '@/components/OpeningHours'
+
+export const metadata: Metadata = {
+  title: 'Startseite',
+  description: 'Allgemein- und Familienmedizin für die ganze Familie in Krefeld-Elfrath. Jetzt Termin vereinbaren.',
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div>
+      {/* Hero */}
+      <section className="bg-white py-16 sm:py-24 border-b border-[#EBEBED]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="max-w-2xl">
+            <p className="text-sm font-medium text-[#1D6FA4] mb-4 uppercase tracking-wide">Allgemeinmedizin · Krefeld-Elfrath</p>
+            <h1 className="text-3xl sm:text-5xl font-semibold text-[#111112] leading-tight mb-4">
+              Ihre Gesundheit in guten Händen.
+            </h1>
+            <p className="text-lg text-[#6D6D72] mb-8">
+              Allgemein- und Familienmedizin für die ganze Familie in Krefeld-Elfrath.
+            </p>
+            <DoctolibButton size="lg" />
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Opening Hours */}
+      <section className="py-12 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <h2 className="text-xl font-semibold text-[#111112] mb-6">Sprechzeiten</h2>
+          <OpeningHours />
         </div>
-      </main>
+      </section>
+
+      {/* Contact Info */}
+      <section className="py-12 bg-[#F5F5F7] border-t border-[#EBEBED]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div>
+              <h2 className="text-xl font-semibold text-[#111112] mb-4">Kontakt &amp; Anschrift</h2>
+              <address className="not-italic text-sm text-[#3A3A3C] space-y-1">
+                <p className="font-medium">Praxis für Allgemeinmedizin Frank van Dinther</p>
+                <p>Neukirchener Straße 5</p>
+                <p>47829 Krefeld-Elfrath</p>
+                <div className="pt-3 space-y-1">
+                  <p>
+                    <span className="text-[#6D6D72]">Tel: </span>
+                    <a href="tel:+492151478989" className="text-[#1D6FA4] hover:underline">02151 478989</a>
+                  </p>
+                  <p>
+                    <span className="text-[#6D6D72]">Fax: </span>
+                    <span>02151 475594</span>
+                  </p>
+                  <p>
+                    <span className="text-[#6D6D72]">E-Mail: </span>
+                    <a href="mailto:info@praxis-vandinther.de" className="text-[#1D6FA4] hover:underline">info@praxis-vandinther.de</a>
+                  </p>
+                </div>
+              </address>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-[#111112] mb-4">Online Termin</h2>
+              <p className="text-sm text-[#6D6D72] mb-4">
+                Neue und bestehende Patienten können bequem online über Doctolib einen Termin vereinbaren.
+              </p>
+              <DoctolibButton size="md" />
+              <p className="text-xs text-[#6D6D72] mt-3">
+                Oder besuchen Sie unser{' '}
+                <a
+                  href="https://www.doctolib.de/allgemeinmedizin/krefeld/frank-van-dinther?utm_medium=referral&utm_campaign=website-button&utm_content=option-5&utm_term=frank-van-dinther&utm_source=frank-van-dinther-website-button"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#1D6FA4] hover:underline"
+                >
+                  Doctolib-Profil
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Banner */}
+      <section className="bg-[#E8F2F9] border-t border-[#1D6FA4]/20 py-6">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 mt-0.5">
+              <div className="w-6 h-6 rounded-full bg-[#1D6FA4] flex items-center justify-center">
+                <svg width="12" height="12" fill="white" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+              </div>
+            </div>
+            <p className="text-sm text-[#1D6FA4] font-medium">
+              Akademische Lehrpraxis des IFAM der Heinrich-Heine-Universität Düsseldorf &amp; Weiterbildungspraxis der Ärztekammer Nordrhein
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
-  );
+  )
 }

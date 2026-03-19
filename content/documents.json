@@ -1,0 +1,22 @@
+{
+  "documents": [
+    {
+      "id": "1",
+      "title": "Logbuch Famulatur",
+      "description": "Logbuch für Studierende während der Famulatur in der Praxis",
+      "file": "/docs/logbuch-famulatur.pdf"
+    },
+    {
+      "id": "2",
+      "title": "Informationen zur Lehrpraxis",
+      "description": "Allgemeine Informationen zur akademischen Lehrpraxis und den Ausbildungsinhalten",
+      "file": "/docs/informationen-lehrpraxis.pdf"
+    },
+    {
+      "id": "3",
+      "title": "Weiterbildungsordnung Allgemeinmedizin",
+      "description": "Weiterbildungsordnung der Ärztekammer Nordrhein für das Fach Allgemeinmedizin",
+      "file": "/docs/weiterbildungsordnung.pdf"
+    }
+  ]
+}
