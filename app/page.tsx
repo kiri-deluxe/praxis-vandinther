@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 import {
-  Calendar, Phone, Stethoscope, Plus, GraduationCap, Award, House,
+  Calendar, Phone,
   FlaskConical, ShieldCheck, Heart, ClipboardList, Luggage,
   MapPin, Mail, ChevronRight,
 } from 'lucide-react'
 import FadeIn from '@/components/FadeIn'
 import OpeningHours from '@/components/OpeningHours'
+import HeroScrollTransition from '@/components/HeroScrollTransition'
 
 const DOCTOLIB = 'https://www.doctolib.de/allgemeinmedizin/krefeld/frank-van-dinther/booking/new-patient?specialityId=1286&source=profile'
 
@@ -15,14 +15,6 @@ export const metadata: Metadata = {
   title: 'Startseite – Praxis van Dinther',
   description: 'Allgemein- und Familienmedizin für die ganze Familie in Krefeld-Elfrath. Jetzt Termin vereinbaren.',
 }
-
-const qualifications = [
-  { icon: Stethoscope, label: 'Facharzt für Allgemeinmedizin' },
-  { icon: Plus,        label: 'Zusatzbezeichnung Manuelle Medizin / Chirotherapie' },
-  { icon: GraduationCap, label: 'Lehrpraxis HHU Düsseldorf (IFAM)' },
-  { icon: Award,       label: 'Weiterbildungsermächtigung Ärztekammer Nordrhein' },
-  { icon: House,       label: 'Hausbesuche im Bedarfsfall' },
-]
 
 const leistungen = [
   {
@@ -56,233 +48,8 @@ export default function Home() {
   return (
     <div style={{ background: '#EEEAE7' }}>
 
-      {/* ══════════════════ HERO ══════════════════ */}
-      <section style={{ position: 'relative', overflow: 'hidden', minHeight: '100svh', display: 'flex', alignItems: 'center' }}>
-
-        {/* Purple ellipse blob (background decoration) */}
-        <div style={{
-          position: 'absolute',
-          right: '-5%',
-          top: '-10%',
-          width: '65%',
-          aspectRatio: '1/1',
-          background: 'radial-gradient(circle, #EDE8FE 0%, #e4dffc 30%, transparent 70%)',
-          borderRadius: '50%',
-          pointerEvents: 'none',
-        }} />
-
-        <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', padding: '0 24px', paddingTop: 120, paddingBottom: 60, position: 'relative', zIndex: 1 }}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-8 sm:gap-0">
-
-            {/* ── Text column ── */}
-            <div className="order-2 sm:order-1 flex flex-col items-start" style={{ gap: 32, paddingBottom: 40, position: 'relative', zIndex: 3 }}>
-
-              {/* Status badge */}
-              <div className="hero-badge" style={{
-                display: 'inline-flex', alignItems: 'center', gap: 8,
-                background: '#EDE8FE', border: '1px solid #643BF8',
-                borderRadius: 999, padding: '8px 14px',
-              }}>
-                <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#22c55e', flexShrink: 0 }} />
-                <span style={{ fontSize: 13, color: '#643BF8', fontWeight: 400 }}>
-                  Praxis geöffnet · Online-Termine verfügbar
-                </span>
-              </div>
-
-              {/* Headline */}
-              <h1
-                className="hero-headline"
-                style={{ fontSize: 'clamp(38px, 5.5vw, 56px)', fontWeight: 600, lineHeight: 1.05, letterSpacing: '-0.02em', color: '#131313', margin: 0 }}
-              >
-                <span style={{ color: '#643BF8' }}>Medizin</span>
-                {', die sich Zeit nimmt.'}
-              </h1>
-
-              {/* Body */}
-              <p className="hero-body" style={{ fontSize: 17, fontWeight: 400, color: '#131313', lineHeight: 1.65, maxWidth: 400, margin: 0 }}>
-                Persönliche Betreuung für die ganze Familie — verständlich, nah und mit echtem Interesse an Ihrer Gesundheit.
-              </p>
-
-              {/* Buttons */}
-              <div className="hero-buttons" style={{ display: 'flex', flexDirection: 'column', gap: 12, width: '100%', maxWidth: 340 }}>
-                <a
-                  href={DOCTOLIB}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary"
-                  style={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-                    background: '#643BF8', color: '#fff',
-                    borderRadius: 999, padding: '14px 24px',
-                    fontSize: 15, fontWeight: 500, letterSpacing: '0.06em',
-                  }}
-                >
-                  <Calendar size={18} strokeWidth={1.5} />
-                  Termin vereinbaren
-                </a>
-                <a
-                  href="tel:+492151478989"
-                  className="btn-outline"
-                  style={{
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-                    border: '1.5px solid #643BF8', color: '#643BF8',
-                    borderRadius: 999, padding: '13px 24px',
-                    fontSize: 15, fontWeight: 500, letterSpacing: '0.06em',
-                    background: 'transparent',
-                  }}
-                >
-                  <Phone size={17} strokeWidth={1.5} />
-                  02151 – 478989
-                </a>
-              </div>
-            </div>
-
-            {/* ── Photo column ── */}
-            <div className="order-1 sm:order-2" style={{ position: 'relative', display: 'flex', justifyContent: 'center', zIndex: 1 }}>
-              <div className="hero-photo" style={{ position: 'relative', width: '100%', maxWidth: 480 }}>
-                <Image
-                  src="/images/arzt.png"
-                  alt="Dr. Frank van Dinther"
-                  width={480}
-                  height={600}
-                  sizes="(max-width: 640px) 80vw, 40vw"
-                  style={{ objectFit: 'contain', objectPosition: 'bottom', width: '100%', height: 'auto' }}
-                  priority
-                />
-
-                {/* Floating quote card */}
-                <div className="hero-quote hidden sm:block" style={{
-                  position: 'absolute',
-                  bottom: '18%',
-                  right: '-8%',
-                  background: '#EDE8FE',
-                  borderRadius: 20,
-                  padding: '16px 20px',
-                  maxWidth: 220,
-                  boxShadow: '4px 4px 12px rgba(0,0,0,0.08)',
-                }}>
-                  <p style={{ fontSize: 11, fontStyle: 'italic', color: '#131313', lineHeight: 1.5, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-                    „Gute Medizin braucht Zeit — und die nehme ich mir für alle Patient*innen."
-                  </p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Trust bar */}
-          <div className="hero-stats" style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            maxWidth: 700,
-            margin: '48px auto 0',
-            borderTop: '1px solid rgba(100,59,248,0.15)',
-            paddingTop: 32,
-            position: 'relative',
-            zIndex: 3,
-          }}>
-            {[
-              { num: '30+',      label: 'Jahre als Hausarzt in Krefeld-Elfrath' },
-              { num: 'HHU',      label: 'Akademische Lehrpraxis Düsseldorf' },
-              { num: 'Inklusiv', label: 'Alle Menschen sind willkommen' },
-            ].map((stat, i) => (
-              <div
-                key={stat.num}
-                style={{
-                  textAlign: 'center',
-                  padding: '0 24px',
-                  borderRight: i < 2 ? '1px solid rgba(100,59,248,0.15)' : 'none',
-                }}
-              >
-                <div style={{ fontSize: 24, fontWeight: 600, color: '#131313', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
-                  {stat.num}
-                </div>
-                <div style={{ fontSize: 13, color: '#8A8A8A', marginTop: 6, lineHeight: 1.4 }}>
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Wave — sits in front of the photo, covers its lower portion */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, lineHeight: 0, zIndex: 2, pointerEvents: 'none' }}>
-          <svg viewBox="0 0 1440 220" fill="#E5E1E2" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ width: '100%', height: 'clamp(120px, 18vw, 220px)', display: 'block' }}>
-            <path d="M0,100 C320,20 800,180 1440,60 L1440,220 L0,220 Z" />
-          </svg>
-        </div>
-      </section>
-
-      {/* ══════════════════ ÜBER DEN ARZT ══════════════════ */}
-      <section style={{ background: '#E5E1E2', padding: '80px 24px 100px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <FadeIn>
-            <div style={{
-              background: '#EEEAE7',
-              borderRadius: 56,
-              padding: 'clamp(32px, 5vw, 80px)',
-            }} className="grid grid-cols-1 sm:grid-cols-2 items-start sm:items-center gap-10 sm:gap-12" id="ueber">
-
-              {/* Photo with masked container */}
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <div style={{
-                  position: 'relative',
-                  width: '100%',
-                  maxWidth: 380,
-                  aspectRatio: '3/4',
-                  borderRadius: 40,
-                  overflow: 'hidden',
-                  background: '#EDE8FE',
-                }}>
-                  <Image
-                    src="/images/arzt.png"
-                    alt="Dr. Frank van Dinther"
-                    fill
-                    sizes="(max-width: 640px) 80vw, 380px"
-                    style={{ objectFit: 'contain', objectPosition: 'bottom center' }}
-                  />
-                </div>
-              </div>
-
-              {/* Text + qualifications */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  <p style={{ fontSize: 11, fontWeight: 400, color: '#8A8A8A', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-                    Ihr Hausarzt
-                  </p>
-                  <h2 style={{ fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 600, color: '#131313', letterSpacing: '-0.02em', lineHeight: 1.05 }}>
-                    Frank van Dinther
-                  </h2>
-                  <div style={{ fontSize: 17, fontWeight: 400, color: '#131313', lineHeight: 1.65, display: 'flex', flexDirection: 'column', gap: 12 }}>
-                    <p>Als Facharzt für Allgemeinmedizin mit Zusatzbezeichnung Manuelle Medizin betreue ich meine Patientinnen und Patienten seit Jahrzehnten mit Sorgfalt, Empathie und medizinischer Kompetenz.</p>
-                    <p>Mir ist wichtig, dass Sie sich bei mir gut aufgehoben fühlen — ob bei einem akuten Anliegen, einer chronischen Erkrankung oder einer Vorsorgeuntersuchung.</p>
-                  </div>
-                </div>
-
-                {/* Qualification pills */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  {qualifications.map((q, i) => (
-                    <FadeIn key={q.label} delay={i * 60}>
-                      <div className="qual-pill" style={{
-                        display: 'flex', alignItems: 'center', gap: 12,
-                        background: '#EDE8FE', border: '1px solid #643BF8',
-                        borderRadius: 999, padding: '12px 20px',
-                        cursor: 'default',
-                      }}>
-                        <q.icon size={18} strokeWidth={1.5} className="qual-icon" style={{ color: '#643BF8', flexShrink: 0 }} />
-                        <span className="qual-label" style={{ fontSize: 15, fontWeight: 500, color: '#131313', letterSpacing: '0.06em', lineHeight: 1 }}>
-                          {q.label}
-                        </span>
-                      </div>
-                    </FadeIn>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+      {/* ══════════════════ HERO + SECTION 2 (scroll transition) ══════════════════ */}
+      <HeroScrollTransition />
 
       {/* ══════════════════ LEISTUNGEN ══════════════════ */}
       <section id="leistungen" style={{ background: '#EEEAE7', padding: '100px 24px' }}>
