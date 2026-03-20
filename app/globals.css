@@ -1,29 +1,111 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-black: #111112;
-  --color-gray-dark: #3A3A3C;
-  --color-gray: #6D6D72;
-  --color-border: #EBEBED;
-  --color-bg: #F5F5F7;
-  --color-accent: #1D6FA4;
-  --color-accent-light: #E8F2F9;
+  --color-bg: #EEEAE7;
+  --color-bg-alt: #E5E1E2;
+  --color-accent: #643BF8;
+  --color-accent-light: #EDE8FE;
+  --color-text: #131313;
+  --color-text-soft: #8A8A8A;
   --color-white: #FFFFFF;
-  --font-sans: 'Inter', sans-serif;
+  --color-border: #643BF8;
+  --font-sans: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-  font-family: 'Inter', sans-serif;
-  color: #111112;
-  background-color: #FFFFFF;
+  font-family: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
+  font-weight: 400;
+  color: #131313;
+  background-color: #EEEAE7;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-body {
-  margin: 0;
+body { margin: 0; }
+a { text-decoration: none; }
+
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+
+/* ── Scroll-reveal animations ─────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero entrance animations */
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+@keyframes heroFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes heroScale {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+
+.hero-badge    { animation: heroFadeUp  0.5s cubic-bezier(0.16,1,0.3,1) 0.1s  both; }
+.hero-headline { animation: heroFadeUp  0.6s cubic-bezier(0.16,1,0.3,1) 0.2s  both; }
+.hero-body     { animation: heroFadeUp  0.6s cubic-bezier(0.16,1,0.3,1) 0.3s  both; }
+.hero-buttons  { animation: heroFadeUp  0.6s cubic-bezier(0.16,1,0.3,1) 0.4s  both; }
+.hero-photo    { animation: heroScale   0.8s cubic-bezier(0.16,1,0.3,1) 0.15s both; }
+.hero-quote    { animation: heroFadeIn  0.7s cubic-bezier(0.16,1,0.3,1) 0.55s both; }
+.hero-stats    { animation: heroFadeUp  0.6s cubic-bezier(0.16,1,0.3,1) 0.5s  both; }
+
+/* Button transitions */
+.btn-primary {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(100, 59, 248, 0.35);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-outline {
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+.btn-outline:hover {
+  background: #643BF8;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Qualification pill hover */
+.qual-pill {
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+.qual-pill:hover {
+  background: #643BF8;
+  border-color: #643BF8;
+  transform: translateX(4px);
+}
+.qual-pill:hover .qual-icon,
+.qual-pill:hover .qual-label {
+  color: #fff !important;
+}
+
+/* Service tile hover */
+.service-tile {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.service-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(100,59,248,0.12);
 }
