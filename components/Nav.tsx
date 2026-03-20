@@ -1,16 +1,15 @@
 'use client'
 
-import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { Menu, X, Calendar, Phone } from 'lucide-react'
 
 const DOCTOLIB = 'https://www.doctolib.de/allgemeinmedizin/krefeld/frank-van-dinther/booking/new-patient?specialityId=1286&source=profile'
 
 const navLinks = [
-  { label: 'Startseite',       href: '/' },
-  { label: 'Leistungen',       href: '/#leistungen' },
-  { label: 'Für Studierende',  href: '/studierende' },
-  { label: 'Kontakt',          href: '/kontakt' },
+  { label: 'Startseite',    href: '#start' },
+  { label: 'Über mich',     href: '#ueber' },
+  { label: 'Leistungen',    href: '#leistungen' },
+  { label: 'Kontakt',       href: '#kontakt' },
 ]
 
 export default function Nav() {
@@ -38,14 +37,14 @@ export default function Nav() {
         justifyContent: 'space-between',
         padding: '0 8px 0 24px',
       }}>
-        <Link href="/" onClick={() => setOpen(false)} style={{ display: 'flex', flexDirection: 'column', gap: 1, lineHeight: 1.2, textDecoration: 'none' }}>
+        <a href="#start" onClick={() => setOpen(false)} style={{ display: 'flex', flexDirection: 'column', gap: 1, lineHeight: 1.2, textDecoration: 'none' }}>
           <span style={{ fontSize: 11, fontWeight: 400, color: '#8A8A8A', letterSpacing: '0.03em' }}>
             Praxis für Allgemeinmedizin
           </span>
           <span style={{ fontSize: 14, fontWeight: 600, color: '#131313', letterSpacing: '-0.01em' }}>
             Frank van Dinther · Krefeld
           </span>
-        </Link>
+        </a>
 
         <button
           onClick={() => setOpen(o => !o)}
@@ -80,7 +79,7 @@ export default function Nav() {
         transition: 'opacity 0.25s cubic-bezier(0.16,1,0.3,1), transform 0.25s cubic-bezier(0.16,1,0.3,1)',
       }}>
         {navLinks.map(link => (
-          <Link
+          <a
             key={link.href}
             href={link.href}
             onClick={() => setOpen(false)}
@@ -88,7 +87,7 @@ export default function Nav() {
             className="hover:bg-[#EDE8FE] hover:text-[#643BF8] transition-colors"
           >
             {link.label}
-          </Link>
+          </a>
         ))}
 
         <div style={{ margin: '8px 16px 4px', display: 'flex', flexDirection: 'column', gap: 8 }}>

@@ -1,0 +1,10 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "praxis-vandinther",
+      "runtimeExecutable": "/Users/christian/Documents/Claude-Code/praxis-vandinther/start-dev.sh",
+      "autoPort": true
+    }
+  ]
+}

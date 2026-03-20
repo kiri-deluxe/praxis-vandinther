@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 @theme {
   --color-bg: #EEEAE7;
   --color-bg-alt: #E5E1E2;
@@ -19,6 +20,7 @@
 }
 
 html {
+  scroll-behavior: smooth;
   font-family: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
   font-weight: 400;
   color: #131313;

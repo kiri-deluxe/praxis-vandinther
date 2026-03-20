@@ -96,7 +96,7 @@ export default function LeistungenPage() {
         ))}
       </div>
 
-      <div className="bg-[#E8F2F9] rounded-xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="bg-[#E8F2F9] rounded-xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <h2 className="text-base font-semibold text-[#111112] mb-1">Fragen zu unseren Leistungen?</h2>
           <p className="text-sm text-[#6D6D72]">Wir beraten Sie gerne – vereinbaren Sie jetzt Ihren Termin.</p>
