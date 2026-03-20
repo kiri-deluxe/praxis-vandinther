@@ -75,7 +75,7 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-8 sm:gap-0">
 
             {/* ── Text column ── */}
-            <div className="order-2 sm:order-1 flex flex-col items-start" style={{ gap: 32, paddingBottom: 40 }}>
+            <div className="order-2 sm:order-1 flex flex-col items-start" style={{ gap: 32, paddingBottom: 40, position: 'relative', zIndex: 3 }}>
 
               {/* Status badge */}
               <div className="hero-badge" style={{
@@ -138,7 +138,7 @@ export default function Home() {
             </div>
 
             {/* ── Photo column ── */}
-            <div className="order-1 sm:order-2" style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+            <div className="order-1 sm:order-2" style={{ position: 'relative', display: 'flex', justifyContent: 'center', zIndex: 1 }}>
               <div className="hero-photo" style={{ position: 'relative', width: '100%', maxWidth: 480 }}>
                 <Image
                   src="/images/arzt.png"
@@ -178,6 +178,8 @@ export default function Home() {
             margin: '48px auto 0',
             borderTop: '1px solid rgba(100,59,248,0.15)',
             paddingTop: 32,
+            position: 'relative',
+            zIndex: 3,
           }}>
             {[
               { num: '30+',      label: 'Jahre als Hausarzt in Krefeld-Elfrath' },
@@ -203,10 +205,10 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Wave transition to next section */}
-        <div style={{ position: 'absolute', bottom: -1, left: 0, right: 0, lineHeight: 0 }}>
-          <svg viewBox="0 0 1440 60" fill="#E5E1E2" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ width: '100%', height: 60, display: 'block' }}>
-            <path d="M0,30 C360,70 1080,0 1440,35 L1440,60 L0,60 Z" />
+        {/* Wave — sits in front of the photo, covers its lower portion */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, lineHeight: 0, zIndex: 2, pointerEvents: 'none' }}>
+          <svg viewBox="0 0 1440 220" fill="#E5E1E2" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ width: '100%', height: 'clamp(120px, 18vw, 220px)', display: 'block' }}>
+            <path d="M0,100 C320,20 800,180 1440,60 L1440,220 L0,220 Z" />
           </svg>
         </div>
       </section>
@@ -219,10 +221,7 @@ export default function Home() {
               background: '#EEEAE7',
               borderRadius: 56,
               padding: 'clamp(32px, 5vw, 80px)',
-              display: 'grid',
-              gridTemplateColumns: '1fr',
-              gap: 40,
-            }} className="sm:grid-cols-2 sm:items-center sm:gap-12" id="ueber">
+            }} className="grid grid-cols-1 sm:grid-cols-2 items-start sm:items-center gap-10 sm:gap-12" id="ueber">
 
               {/* Photo with masked container */}
               <div style={{ display: 'flex', justifyContent: 'center' }}>
