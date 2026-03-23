@@ -1,0 +1,2031 @@
+---
+import '../styles/global.css';
+
+const DOCTOLIB_URL = "https://www.doctolib.de/allgemeinmedizin/krefeld/frank-van-dinther/booking/new-patient?specialityId=1286&source=profile";
+---
+
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Praxis für Allgemeinmedizin Frank van Dinther · Krefeld</title>
+  <meta name="description" content="Hausarztpraxis in Krefeld. Facharzt für Allgemeinmedizin. Termine bequem online über Doctolib buchen." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Tokens ─────────────────────────────── */
+    :root {
+      --ff: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --c-bg:     #FFFFFF;
+      --c-text:   #111111;
+      --c-muted:  #888888;
+      --c-subtle: #BBBBBB;
+      --c-border: #E8E8E8;
+      --c-doc:    #0071E3;
+      --c-hero:   #0d1a10;
+      --max-w:    1100px;
+    }
+
+    /* ─── Reset ──────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--ff);
+      font-weight: 300;
+      background: var(--c-bg);
+      color: var(--c-text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; height: auto; }
+    button { background: none; border: none; cursor: pointer; font: inherit; }
+
+    /* ─── Skip link ──────────────────────────── */
+    .skip {
+      position: absolute; top: -60px; left: 20px; z-index: 9999;
+      background: #111; color: #fff; padding: 8px 16px; font-size: 13px;
+      font-family: var(--ff);
+    }
+    .skip:focus { top: 10px; }
+
+    /* ─── Wrap ───────────────────────────────── */
+    .wrap { max-width: var(--max-w); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+
+    /* ─── NAV ────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      background: rgba(13, 26, 16, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 0.5px solid rgba(255,255,255,0.08);
+      transition: background 350ms ease, border-color 350ms ease;
+    }
+    .nav.scrolled {
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom-color: var(--c-border);
+    }
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .nav-logo {
+      font-family: var(--ff);
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      flex-shrink: 0;
+      transition: color 350ms;
+      line-height: 1.2;
+    }
+    .nav-logo-sub {
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      transition: color 350ms;
+    }
+    .nav-logo-main {
+      font-weight: 400;
+      font-size: 14px;
+      color: rgba(255,255,255,0.95);
+      letter-spacing: 0.01em;
+      transition: color 350ms;
+    }
+    .nav.scrolled .nav-logo-main { color: var(--c-text); }
+    .nav.scrolled .nav-logo-sub { color: rgba(0,0,0,0.4); }
+
+    .nav-links {
+      display: none;
+      list-style: none;
+      gap: 28px;
+      margin-left: auto;
+    }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
+    .nav-links a {
+      font-family: var(--ff);
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      transition: color 200ms;
+    }
+    .nav-links a:hover { color: rgba(255,255,255,0.9); }
+    .nav.scrolled .nav-links a { color: rgba(0,0,0,0.45); }
+    .nav.scrolled .nav-links a:hover { color: var(--c-text); }
+
+    .btn-nav {
+      font-family: var(--ff);
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      padding: 9px 18px;
+      background: rgba(255,255,255,0.12);
+      border: 0.5px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.9);
+      border-radius: 6px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: transform 200ms cubic-bezier(0.16,1,0.3,1),
+                  background 200ms ease, border-color 200ms ease;
+      display: none;
+    }
+    @media (min-width: 768px) { .btn-nav { display: block; } }
+    .btn-nav:hover  { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.5); transform: scale(1.02); }
+    .btn-nav:active { transform: scale(0.97); transition-duration: 100ms; }
+    .nav.scrolled .btn-nav {
+      background: #143731; border-color: #143731; color: #fff;
+    }
+    .nav.scrolled .btn-nav:hover { background: #0d2620; border-color: #0d2620; }
+
+    .burger {
+      margin-left: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+    }
+    @media (min-width: 768px) { .burger { display: none; } }
+    .burger span {
+      display: block; width: 22px; height: 1px;
+      background: rgba(255,255,255,0.8);
+      transition: transform 200ms, opacity 200ms, background 350ms;
+    }
+    .nav.scrolled .burger span { background: var(--c-text); }
+    .burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* ─── Mobile nav ─────────────────────────── */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      inset: 64px 0 0 0;
+      z-index: 190;
+      background: var(--c-hero);
+      padding: 40px 24px;
+      flex-direction: column;
+      gap: 0;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-family: var(--ff);
+      font-weight: 300;
+      font-size: 22px;
+      color: rgba(255,255,255,0.85);
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      letter-spacing: -0.01em;
+    }
+    .mobile-nav-doc {
+      margin-top: 28px;
+      align-self: flex-start;
+      font-family: var(--ff) !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      padding: 12px 24px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 0;
+    }
+
+    /* ─── HERO ───────────────────────────────── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100svh;
+      min-height: 600px;
+      background: var(--c-hero);
+      overflow: hidden;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .hero-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none;
+      padding: 0 clamp(24px, 4vw, 40px);
+      z-index: 2;
+    }
+
+    /* Vignette overlay */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 38%, rgba(0,0,0,0.32) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ── Headline block (top third) */
+    .hero-top-block {
+      padding-top: calc(60px + 80px); /* nav height + breathing room */
+      max-width: var(--max-w);
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .hero-headline {
+      font-family: var(--ff);
+      font-weight: 300;
+      font-size: clamp(64px, 7vw, 96px);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    /* Word-by-word slide-up animation */
+    .hw {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: word-up 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation-delay: var(--d, 0ms);
+    }
+    @keyframes word-up {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Bottom row (buttons + sub) */
+    .hero-bottom-block {
+      max-width: var(--max-w);
+      width: 100%;
+      margin: 0 auto;
+      padding-bottom: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    @media (min-width: 640px) {
+      .hero-bottom-block {
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+    }
+
+    .hero-sub {
+      font-family: var(--ff);
+      font-weight: 300;
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      max-width: 220px;
+      opacity: 0;
+      animation: sub-fade 600ms ease forwards;
+      animation-delay: 500ms;
+    }
+    @keyframes sub-fade {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .hero-btn-row {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      flex-shrink: 0;
+      opacity: 0;
+      animation: sub-fade 600ms ease forwards;
+      animation-delay: 560ms;
+    }
+    @media (min-width: 640px) { .hero-btn-row { align-items: flex-end; } }
+
+    .hero-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      pointer-events: auto;
+    }
+
+    .hero-badge {
+      font-family: var(--ff);
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+    }
+    .hero-badge::before {
+      content: '● ';
+      color: #5adf7a;
+      font-size: 8px;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+
+    /* ─── BUTTON SYSTEM ──────────────────────── */
+    /* Primary — white on dark / dark on light */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px;
+      border-radius: 6px;
+      font-family: var(--ff); font-weight: 400; font-size: 13px;
+      letter-spacing: 0.03em;
+      background: #ffffff; color: #111111;
+      border: none; cursor: pointer;
+      transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+                  background 200ms cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .btn-primary:hover  { transform: scale(1.02); background: #ececec; }
+    .btn-primary:active { transform: scale(0.97); transition-duration: 100ms; }
+
+    /* Primary inverted (dark bg, for light-section contexts) */
+    .btn-primary-dark {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px;
+      border-radius: 6px;
+      font-family: var(--ff); font-weight: 400; font-size: 13px;
+      letter-spacing: 0.03em;
+      background: #111111; color: #ffffff;
+      border: none; cursor: pointer;
+      transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+                  background 200ms cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .btn-primary-dark:hover  { transform: scale(1.02); background: #2a2a2a; }
+    .btn-primary-dark:active { transform: scale(0.97); transition-duration: 100ms; }
+
+    /* Ghost */
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px;
+      border-radius: 6px;
+      font-family: var(--ff); font-weight: 400; font-size: 13px;
+      letter-spacing: 0.03em;
+      background: transparent;
+      border: 0.5px solid rgba(255,255,255,0.35);
+      color: rgba(255,255,255,0.75);
+      cursor: pointer;
+      transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 200ms ease,
+                  background 200ms ease;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .btn-ghost:hover  {
+      border-color: rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.07);
+      transform: scale(1.02);
+    }
+    .btn-ghost:active { transform: scale(0.97); transition-duration: 100ms; }
+
+    /* ─── CARDS SECTION ─────────────────────── */
+    .cards-section {
+      background: #f5f5f0;
+      padding: clamp(64px, 8vw, 96px) 0;
+    }
+    .cards-headline {
+      font-family: var(--ff);
+      font-weight: 300;
+      font-size: clamp(36px, 6vw, 60px);
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      color: var(--c-text);
+      margin-bottom: 48px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 700ms ease, transform 700ms ease;
+    }
+    .cards-headline.visible { opacity: 1; transform: none; }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      background: rgba(0,0,0,0.08);
+    }
+    @media (min-width: 640px) {
+      .cards-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .card {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      /* content-driven height — no min-height */
+      transition: transform 250ms cubic-bezier(0.16,1,0.3,1),
+                  background 250ms ease,
+                  border 250ms ease;
+    }
+    .card--lime  { background: #CEFF8C; color: #143731; }
+    .card--dark  { background: #143731; color: #CEFF8C; }
+    .card--sand  { background: #E8E0D4; color: #143731; }
+
+    /* Hover — desktop only, no shadows */
+    @media (min-width: 640px) {
+      .card:hover               { transform: translateY(-2px); }
+      .card--lime:hover         { background: #D4FF9A; }
+      .card--dark:hover         { background: #1a4a3d;
+                                  border: 0.5px solid rgba(206,255,140,0.3); }
+      .card--sand:hover         { background: #F0E8DC; }
+    }
+
+    /* Icon: 64×64, stroke only, inherits card text color */
+    .card-icon {
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+      margin-bottom: 24px;
+      color: inherit;
+    }
+
+    /* Body: holds title + text, grows */
+    .card-body { display: flex; flex-direction: column; flex: 1; }
+
+    /* Title: min-height ensures alignment across all 3 cards */
+    .card-title {
+      font-family: var(--ff);
+      font-weight: 500;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: inherit;
+      margin: 0 0 12px 0;
+      min-height: 52px;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .card-text {
+      font-family: var(--ff);
+      font-weight: 300;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .card--lime  .card-text { color: rgba(20,55,49,0.65); }
+    .card--dark  .card-text { color: rgba(206,255,140,0.55); }
+    .card--sand  .card-text { color: rgba(20,55,49,0.65); }
+
+    /* Mobile: row layout — icon left, text right */
+    @media (max-width: 639px) {
+      .card { flex-direction: row; align-items: flex-start; gap: 16px; }
+      .card-icon { width: 48px; height: 48px; margin-bottom: 0; margin-top: 2px; flex-shrink: 0; }
+      .card-title { min-height: unset; align-items: flex-start; }
+    }
+
+    /* ─── TICKER ─────────────────────────────── */
+    .ticker {
+      border-top: 0.5px solid var(--c-border);
+      border-bottom: 0.5px solid var(--c-border);
+      overflow: hidden;
+      padding: 16px 0;
+      background: var(--c-bg);
+    }
+    .ticker-track {
+      display: inline-flex;
+      white-space: nowrap;
+      animation: ticker-scroll 45s linear infinite;
+    }
+    .ticker-track:hover { animation-play-state: paused; }
+    .ticker-item {
+      font-family: var(--ff);
+      font-weight: 300;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--c-subtle);
+      padding: 0 36px;
+    }
+    .ticker-sep { color: var(--c-border); }
+
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ─── Section base ───────────────────────── */
+    .section {
+      border-top: 0.5px solid var(--c-border);
+      padding-top: clamp(48px, 8vw, 88px);
+      padding-bottom: clamp(48px, 8vw, 88px);
+    }
+
+    /* ─── Section label ──────────────────────── */
+    .label {
+      font-family: var(--ff);
+      font-weight: 400;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--c-muted);
+      margin-bottom: 28px;
+    }
+
+    /* ─── Section headline ───────────────────── */
+    .headline {
+      font-family: var(--ff);
+      font-weight: 300;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--c-text);
+      margin-bottom: 40px;
+    }
+
+    /* ─── Buttons ────────────────────────────── */
+    .btn-dark {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--c-text); color: #fff;
+      font-family: var(--ff); font-weight: 500; font-size: 13px;
+      letter-spacing: 0.02em; padding: 13px 24px; border-radius: 0;
+      white-space: nowrap; transition: opacity 180ms;
+    }
+    .btn-dark:hover { opacity: 0.75; }
+
+    .btn-doc {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #143731; color: #fff; border: none;
+      font-family: var(--ff); font-weight: 400; font-size: 13px;
+      letter-spacing: 0.02em; padding: 13px 28px; border-radius: 6px;
+      white-space: nowrap; cursor: pointer; text-decoration: none;
+      transition: transform 200ms ease, background 200ms ease;
+    }
+    .btn-doc:hover  { background: #0d2620; transform: scale(1.02); }
+    .btn-doc:active { transform: scale(0.97); transition-duration: 100ms; }
+
+    /* ─── HOURS SECTION ─────────────────────── */
+    #oeffnungszeiten.section {
+      background: #EAEBE6;
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+
+    .hours-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .hours-cards { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .hours-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 32px 28px;
+    }
+
+    .live-indicator {
+      display: flex; align-items: center; gap: 7px;
+      margin-bottom: 20px;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #ccc; flex-shrink: 0;
+    }
+    .live-label {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 11px; color: #999; letter-spacing: 0.02em;
+    }
+
+    .hours-card-title {
+      font-family: var(--ff); font-weight: 500;
+      font-size: 20px; color: #111;
+      letter-spacing: -0.01em; margin-bottom: 18px;
+    }
+
+    .hours-card-rows { display: flex; flex-direction: column; }
+    .hours-card-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 7px 0; border-top: 0.5px solid #EBEBEB; gap: 8px;
+    }
+    .hours-card-day {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 14px; color: #888; white-space: nowrap;
+    }
+    .hours-card-time {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 15px; color: #444;
+      white-space: nowrap; font-variant-numeric: tabular-nums;
+    }
+
+    .hours-card-note {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 12px; color: #aaa; margin-top: 16px;
+    }
+    .hours-card-link {
+      display: inline-block;
+      font-family: var(--ff); font-weight: 400;
+      font-size: 13px; color: #143731;
+      margin-top: 10px; text-decoration: none;
+      border-bottom: 0.5px solid currentColor; padding-bottom: 1px;
+      transition: opacity 150ms;
+    }
+    .hours-card-link:hover { opacity: 0.65; }
+
+    /* ─── SCHLIEßZEITEN ──────────────────────── */
+    .schliesszeiten {
+      margin-top: 48px; padding-top: 28px;
+      border-top: 0.5px solid rgba(0,0,0,0.12);
+    }
+    .schliesszeiten-label {
+      font-family: var(--ff); font-weight: 400;
+      font-size: 10px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #888; margin-bottom: 14px;
+    }
+    .schliesszeiten-list { list-style: none; }
+    .schliesszeiten-item {
+      display: flex; gap: 20px; align-items: baseline;
+      font-family: var(--ff); font-weight: 300;
+      font-size: 14px; color: #666;
+      padding: 9px 0;
+      border-bottom: 0.5px solid rgba(0,0,0,0.07);
+    }
+    .schliesszeiten-item:first-child { border-top: 0.5px solid rgba(0,0,0,0.07); }
+    .schliesszeiten-item-date { flex: 1; }
+    .schliesszeiten-item-type { color: #aaa; font-size: 13px; }
+
+    /* ─── NOTFALL buttons ────────────────────── */
+    .notfall-clean {
+      margin-top: 36px; padding-top: 28px;
+      border-top: 0.5px solid rgba(0,0,0,0.12);
+    }
+    .notfall-clean-intro {
+      font-family: var(--ff); font-weight: 400;
+      font-size: 10px; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #888; margin-bottom: 14px;
+    }
+    .notfall-btns { display: flex; flex-wrap: wrap; gap: 10px; }
+    .notfall-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #f5f5f0;
+      border: 0.5px solid #E8E5E0;
+      border-radius: 10px;
+      padding: 14px 24px;
+      cursor: pointer; text-decoration: none;
+      transition: background 200ms ease, border-color 200ms ease;
+    }
+    .notfall-btn:hover { background: #EEEAE7; border-color: #CEFF8C; }
+    .notfall-btn-icon { flex-shrink: 0; color: #143731; }
+    .notfall-btn-body { display: flex; flex-direction: column; gap: 2px; }
+    .notfall-btn-number {
+      font-family: var(--ff); font-weight: 500;
+      font-size: 16px; color: #111; line-height: 1;
+    }
+    .notfall-btn-label {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 11px; color: #888;
+    }
+
+    /* ─── ABOUT ──────────────────────────────── */
+    #arzt { border-top: 0.5px solid var(--c-border); }
+
+    /* ─── ÜBER UNS ─────────────────────────── */
+    .about-section { background: #ffffff; padding: 80px 40px; }
+    @media (max-width: 639px) { .about-section { padding: 48px 24px; } }
+    .about-inner { max-width: var(--max-w); margin: 0 auto; }
+
+    .about-label {
+      font-family: var(--ff); font-weight: 400;
+      font-size: 10px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #888; margin-bottom: 16px;
+    }
+    .about-headline {
+      font-family: var(--ff); font-weight: 300;
+      font-size: clamp(32px, 4vw, 48px); color: #111;
+      letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 16px;
+    }
+    .about-subtext {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 16px; color: #666; line-height: 1.75;
+      max-width: 560px; margin: 0;
+    }
+
+    /* Team grid */
+    .about-team-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+      margin-top: 60px;
+    }
+    .about-member-photo-wrap {
+      width: 100%; aspect-ratio: 3/4; border-radius: 12px;
+      overflow: hidden; margin-bottom: 16px; background: #f5f5f0;
+    }
+    .about-member-photo {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: top center; display: block;
+    }
+    .about-member-info { display: contents; }
+    .about-member-name {
+      font-family: var(--ff); font-weight: 500;
+      font-size: 16px; color: #111; margin-bottom: 4px;
+    }
+    .about-member-title {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 13px; color: #888;
+    }
+    @media (max-width: 767px) {
+      .about-team-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    }
+    @media (max-width: 639px) {
+      .about-team-grid { grid-template-columns: 1fr; gap: 0; margin-top: 40px; }
+      .about-member {
+        display: flex; flex-direction: row; align-items: center; gap: 16px;
+        padding: 16px 0; border-bottom: 0.5px solid #E8E5E0;
+      }
+      .about-member:last-child { border-bottom: none; }
+      .about-member-photo-wrap {
+        width: 80px; height: 80px; aspect-ratio: 1;
+        border-radius: 50%; flex-shrink: 0; margin-bottom: 0;
+      }
+      .about-member-info { display: flex; flex-direction: column; gap: 2px; }
+      .about-member-name { font-size: 15px; margin-bottom: 0; }
+    }
+
+    /* Stats bar */
+    .about-stats {
+      margin-top: 64px; background: #143731;
+      border-radius: 16px; padding: 32px 40px;
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 0; align-items: start;
+    }
+    .about-stat {
+      text-align: center;
+      padding: 0 28px;
+      border-right: 0.5px solid rgba(255,255,255,0.1);
+    }
+    .about-stat:first-child { padding-left: 0; }
+    .about-stat:last-child { border-right: none; padding-right: 0; }
+    .about-stat-num {
+      font-family: var(--ff); font-weight: 600;
+      font-size: 36px; color: #CEFF8C; line-height: 1; letter-spacing: -0.02em;
+    }
+    .about-stat-lbl {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.5; margin-top: 6px;
+    }
+    @media (max-width: 639px) {
+      .about-stats {
+        grid-template-columns: 1fr;
+        padding: 16px 24px;
+        gap: 0;
+      }
+      .about-stat {
+        display: flex; flex-direction: row; align-items: center; gap: 16px;
+        text-align: left; padding: 16px 0;
+        border-right: none;
+        border-bottom: 0.5px solid rgba(255,255,255,0.1);
+      }
+      .about-stat:last-child { border-bottom: none; }
+      .about-stat-num { min-width: 72px; flex-shrink: 0; text-align: left; font-size: 28px; line-height: 1; }
+      .about-stat-lbl { font-size: 13px; line-height: 1.4; margin-top: 0; padding-top: 0; flex: 1; }
+    }
+
+    /* ─── SERVICES / ACCORDION ───────────────── */
+    .accordion-item { border-bottom: 0.5px solid #E8E5E0; }
+    .accordion-item:last-child { border-bottom: none; }
+
+    .accordion-trigger {
+      width: 100%; display: flex;
+      justify-content: space-between; align-items: center;
+      padding: 24px 0; text-align: left; gap: 16px;
+    }
+    .accordion-trigger-name {
+      font-family: var(--ff); font-weight: 400;
+      font-size: 20px; color: #111;
+      display: inline;
+      transition: background 200ms ease, padding 150ms ease, border-radius 150ms ease;
+      border-radius: 4px;
+    }
+    .accordion-icon {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 20px; color: var(--c-muted);
+      flex-shrink: 0; line-height: 1;
+      transition: transform 200ms cubic-bezier(0.16,1,0.3,1), color 200ms ease;
+    }
+
+    /* Open state — title highlight + icon */
+    .accordion-trigger[aria-expanded="true"] .accordion-trigger-name {
+      background: #CEFF8C;
+      padding: 2px 6px;
+    }
+    .accordion-trigger[aria-expanded="true"] .accordion-icon {
+      transform: rotate(45deg);
+      color: #143731;
+    }
+
+    /* Body */
+    .accordion-body {
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 280ms ease;
+    }
+    .accordion-body.open { grid-template-rows: 1fr; }
+    .accordion-body-inner { overflow: hidden; }
+
+    /* List */
+    .accordion-list {
+      list-style: none;
+      padding: 8px 0 32px 20px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .accordion-list li {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 17px; color: #444;
+      padding: 4px 0; line-height: 1.9;
+      position: relative; padding-left: 20px;
+    }
+    .accordion-list li::before {
+      content: '·'; position: absolute; left: 0;
+      color: #143731; font-size: 20px; font-weight: 600;
+      line-height: 1.5; font-family: var(--ff);
+    }
+
+    /* Hover — desktop only, title text only */
+    @media (hover: hover) {
+      .accordion-trigger:not([aria-expanded="true"]):hover .accordion-trigger-name {
+        background: #CEFF8C;
+        padding: 2px 6px;
+        cursor: pointer;
+      }
+    }
+
+    /* ─── STUDENTS ───────────────────────────── */
+    .students-wrap {
+      margin: 0 40px;
+    }
+    .students-card {
+      background: #143731; border-radius: 24px; overflow: hidden;
+      padding: 64px 48px;
+    }
+    .students-label {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: #CEFF8C; margin-bottom: 20px;
+    }
+    .students-headline {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 44px; color: #ffffff;
+      letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 16px;
+    }
+    .studierende-inner {
+      display: grid; grid-template-columns: 1fr; gap: 40px;
+    }
+    @media (min-width: 768px) {
+      .studierende-inner { grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    }
+    .students-subtext {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 16px; color: rgba(255,255,255,0.6);
+      line-height: 1.75; max-width: 560px; margin-bottom: 48px;
+    }
+    .students-docs-label {
+      font-family: var(--ff); font-weight: 400;
+      font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #CEFF8C; margin-bottom: 20px;
+    }
+    .students-doc-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; margin-bottom: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 0.5px solid rgba(255,255,255,0.1);
+      border-radius: 10px; cursor: pointer; text-decoration: none;
+      transition: background 200ms ease, border-color 200ms ease;
+    }
+    .students-doc-item:hover {
+      background: rgba(206,255,140,0.1);
+      border-color: rgba(206,255,140,0.3);
+    }
+    .students-doc-item:hover .students-doc-arrow { color: #CEFF8C; }
+    .students-doc-left {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .students-doc-icon { color: rgba(255,255,255,0.5); flex-shrink: 0; }
+    .students-doc-meta { display: flex; flex-direction: column; gap: 2px; }
+    .students-doc-name {
+      font-family: var(--ff); font-weight: 400;
+      font-size: 14px; color: #ffffff;
+    }
+    .students-doc-tag {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 12px; color: rgba(255,255,255,0.4);
+    }
+    .students-doc-arrow { color: rgba(255,255,255,0.4); flex-shrink: 0; transition: color 200ms ease; }
+    .students-cta {
+      margin-top: 40px; padding-top: 32px;
+      border-top: 0.5px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+    .students-cta-text {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 15px; color: rgba(255,255,255,0.6);
+    }
+    .students-cta-btn {
+      display: inline-flex; align-items: center;
+      background: transparent; color: #ffffff;
+      border: 0.5px solid rgba(255,255,255,0.4);
+      padding: 12px 24px; border-radius: 6px;
+      font-family: var(--ff); font-weight: 400; font-size: 13px;
+      text-decoration: none; white-space: nowrap;
+      transition: border-color 200ms ease, color 200ms ease;
+    }
+    .students-cta-btn:hover { border-color: #CEFF8C; color: #CEFF8C; }
+    @media (max-width: 639px) {
+      .students-wrap { margin: 0 16px; }
+      .students-card { border-radius: 16px; padding: 32px 24px; }
+      .students-headline { font-size: 30px; }
+      .students-doc-item { padding: 12px 16px; }
+      .students-cta { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ─── CONTACT ────────────────────────────── */
+    .contact-section { background: #f5f5f0; padding: 80px 40px; }
+    @media (max-width: 639px) { .contact-section { padding: 48px 24px; } }
+    .contact-inner { max-width: var(--max-w); margin: 0 auto; }
+    .contact-label {
+      font-family: var(--ff); font-weight: 400;
+      font-size: 10px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #888; margin-bottom: 16px;
+    }
+    .contact-headline {
+      font-family: var(--ff); font-weight: 300;
+      font-size: clamp(32px, 4vw, 48px); color: #111;
+      letter-spacing: -0.02em; margin-bottom: 48px;
+    }
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 32px; align-items: stretch;
+    }
+    @media (max-width: 767px) { .contact-grid { grid-template-columns: 1fr; } }
+
+    /* Left card */
+    .contact-card {
+      background: #ffffff; border-radius: 16px;
+      padding: 40px; display: flex; flex-direction: column; gap: 32px;
+    }
+    .contact-praxis-primary {
+      font-family: var(--ff); font-weight: 500; font-size: 18px; color: #111;
+    }
+    .contact-praxis-secondary {
+      font-family: var(--ff); font-weight: 300; font-size: 18px; color: #666;
+      margin-top: 2px; margin-bottom: 20px;
+    }
+    .contact-addr-text {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 15px; color: #444; line-height: 1.8;
+    }
+    .contact-row {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none; color: #111;
+      font-family: var(--ff); font-weight: 400; font-size: 15px;
+      transition: color 150ms ease;
+    }
+    .contact-row-fax { color: #888; cursor: default; }
+    .contact-row-email { color: #143731; }
+    .contact-row:not(.contact-row-fax):hover { color: #143731; text-decoration: underline; }
+    .contact-row-icon { color: #143731; flex-shrink: 0; }
+    .contact-row-fax .contact-row-icon { color: #bbb; }
+    .contact-divider { border: none; border-top: 0.5px solid #E8E5E0; margin: 0; }
+    .contact-doctolib-label {
+      font-family: var(--ff); font-weight: 300; font-size: 13px; color: #888;
+      margin-bottom: 12px;
+    }
+    .contact-doctolib-btn {
+      display: block; width: 100%; text-align: center;
+      background: #143731; color: #ffffff; border: none;
+      font-family: var(--ff); font-weight: 500; font-size: 14px;
+      padding: 14px; border-radius: 8px; text-decoration: none;
+      transition: background 200ms ease;
+    }
+    .contact-doctolib-btn:hover { background: #0d2620; }
+
+    /* Right card — map */
+    .contact-map-card {
+      background: #ffffff; border-radius: 16px; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .contact-map-card iframe {
+      flex: 1; width: 100%; min-height: 400px; border: none; display: block;
+    }
+    @media (max-width: 767px) { .contact-map-card iframe { min-height: 280px; } }
+    .contact-map-footer {
+      display: block; padding: 10px 16px; background: #ffffff;
+      font-family: var(--ff); font-weight: 300; font-size: 12px; color: #888;
+      text-decoration: none; transition: color 150ms ease; flex-shrink: 0;
+    }
+    .contact-map-footer:hover { color: #143731; }
+
+    /* ÖPNV bar */
+    .contact-oepnv {
+      margin-top: 24px; background: #143731; border-radius: 12px;
+      padding: 20px 28px; display: flex; align-items: center;
+      gap: 20px; flex-wrap: wrap;
+    }
+    .contact-oepnv-icon { color: #CEFF8C; flex-shrink: 0; }
+    .contact-oepnv-text { flex: 1; min-width: 0; }
+    .contact-oepnv-title {
+      font-family: var(--ff); font-weight: 500; font-size: 14px; color: #CEFF8C;
+    }
+    .contact-oepnv-detail {
+      font-family: var(--ff); font-weight: 300; font-size: 13px;
+      color: rgba(255,255,255,0.6); margin-top: 2px;
+    }
+    .contact-oepnv-link {
+      font-family: var(--ff); font-weight: 400; font-size: 13px;
+      color: #CEFF8C; text-decoration: none; white-space: nowrap; margin-left: auto;
+    }
+    .contact-oepnv-link:hover { text-decoration: underline; }
+    @media (max-width: 767px) {
+      .contact-oepnv { flex-direction: column; align-items: flex-start; }
+      .contact-oepnv-link { margin-left: 0; }
+    }
+
+    /* ─── FOOTER ─────────────────────────────── */
+    footer {
+      border-top: 0.5px solid var(--c-border);
+      padding: 32px 24px;
+    }
+    .footer-inner {
+      max-width: var(--max-w); margin: 0 auto;
+      display: flex; flex-wrap: wrap;
+      justify-content: space-between; align-items: center; gap: 12px;
+    }
+    .footer-copy {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 12px; color: var(--c-muted);
+    }
+    .footer-links { display: flex; gap: 24px; list-style: none; }
+    .footer-links a {
+      font-family: var(--ff); font-weight: 300;
+      font-size: 12px; color: var(--c-muted); transition: color 150ms;
+    }
+    .footer-links a:hover { color: var(--c-text); }
+
+    /* ─── Focus & motion ─────────────────────── */
+    *:focus-visible { outline: 1.5px solid var(--c-text); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a href="#main" class="skip">Zum Inhalt springen</a>
+
+  <!-- ── NAV ─────────────────────────────────── -->
+  <nav class="nav" id="nav" aria-label="Hauptnavigation">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" aria-label="Praxis van Dinther — Startseite">
+        <span class="nav-logo-sub">Praxis für Allgemeinmedizin</span>
+        <span class="nav-logo-main">Frank van Dinther</span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="#oeffnungszeiten">Sprechzeiten</a></li>
+        <li><a href="#arzt">Über uns</a></li>
+        <li><a href="#leistungen">Leistungen</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+      <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" class="btn-nav">
+        Termin buchen
+      </a>
+      <button class="burger" id="burger" aria-expanded="false"
+              aria-controls="mobile-nav" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile nav -->
+  <div class="mobile-nav" id="mobile-nav" role="navigation" aria-label="Mobile Navigation">
+    <a href="#oeffnungszeiten">Sprechzeiten</a>
+    <a href="#arzt">Über uns</a>
+    <a href="#leistungen">Leistungen</a>
+    <a href="#studierende">Für Studierende</a>
+    <a href="#kontakt">Kontakt</a>
+    <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" class="mobile-nav-doc">
+      Termin bei Doctolib
+    </a>
+  </div>
+
+  <main id="main">
+
+    <!-- ── HERO ─────────────────────────────── -->
+    <section class="hero" aria-label="Willkommen">
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+      <div class="hero-content">
+
+        <!-- Headline: top third -->
+        <div class="hero-top-block">
+          <h1 class="hero-headline" aria-label="Ihre Gesundheit in guten Händen.">
+            <span class="hw" style="--d:0ms">Ihre</span>
+            <span class="hw" style="--d:80ms"> Gesundheit</span><br aria-hidden="true">
+            <span class="hw" style="--d:160ms">in</span>
+            <span class="hw" style="--d:240ms"> guten</span>
+            <span class="hw" style="--d:320ms"> Händen.</span>
+          </h1>
+        </div>
+
+        <!-- Bottom row: sub + buttons -->
+        <div class="hero-bottom-block">
+          <p class="hero-sub">
+            Allgemeinmedizin in Krefeld-Elfrath<br>
+            für die ganze Familie, mit Zeit für Ihre Fragen.
+          </p>
+          <div class="hero-btn-row">
+            <div class="hero-btns">
+              <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer"
+                 class="btn-primary" aria-label="Termin vereinbaren via Doctolib">
+                Termin vereinbaren
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+              <a href="#oeffnungszeiten" class="btn-ghost">
+                Öffnungszeiten
+              </a>
+            </div>
+            <span class="hero-badge">Heute geöffnet ab 08:30</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── CARDS SECTION ─────────────────────── -->
+    <section class="cards-section" aria-labelledby="cards-heading">
+      <div class="wrap">
+        <h2 class="cards-headline" id="cards-heading">
+          Was uns<br>ausmacht.
+        </h2>
+
+        <div class="cards-grid">
+
+          <!-- Card 1: Persönlich (lime) -->
+          <div class="card card--lime feature-card">
+            <svg class="card-icon" width="64" height="64" viewBox="0 0 64 64" fill="none"
+                 stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
+                 aria-hidden="true">
+              <circle cx="24" cy="32" r="16"/>
+              <circle cx="40" cy="32" r="16"/>
+            </svg>
+            <div class="card-body">
+              <h3 class="card-title">Persönlich</h3>
+              <p class="card-text">Jeder Patient ist anders — und verdient echte Aufmerksamkeit.
+                Wir hören zu, erklären und nehmen uns Zeit für Ihre Fragen.
+                Medizin, die den Menschen sieht.</p>
+            </div>
+          </div>
+
+          <!-- Card 2: Vorsorge (dark) -->
+          <div class="card card--dark feature-card">
+            <svg class="card-icon" width="64" height="64" viewBox="0 0 64 64" fill="none"
+                 stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
+                 aria-hidden="true">
+              <path d="M32 12 L32 52 M12 32 L52 32"/>
+              <circle cx="32" cy="32" r="20"/>
+            </svg>
+            <div class="card-body">
+              <h3 class="card-title">Vorsorge</h3>
+              <p class="card-text">Früh erkennen ist besser als spät behandeln.
+                Wir begleiten Sie mit regelmäßigen Checks und
+                modernen Vorsorgeuntersuchungen für jedes Lebensalter.</p>
+            </div>
+          </div>
+
+          <!-- Card 3: Hausbesuche (light) -->
+          <div class="card card--sand feature-card">
+            <svg class="card-icon" width="64" height="64" viewBox="0 0 64 64" fill="none"
+                 stroke="currentColor" stroke-width="1.2" stroke-linecap="round"
+                 stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 30 L32 12 L52 30 L52 52 L12 52 Z"/>
+              <path d="M24 52 L24 38 L40 38 L40 52"/>
+            </svg>
+            <div class="card-body">
+              <h3 class="card-title">Hausbesuche</h3>
+              <p class="card-text">Wenn der Weg in die Praxis nicht möglich ist,
+                kommen wir zu Ihnen — schnell, unkompliziert und vertrauensvoll.
+                Weil Ihre Gesundheit keine Wartezeit kennt.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TICKER ────────────────────────────── -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span class="ticker-item">Allgemeinmedizin</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Familienpraxis</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Vorsorge</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Hausbesuche</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Akademische Lehrpraxis HHU Düsseldorf</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Doctolib</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Krefeld-Elfrath</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Chirotherapie</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Allgemeinmedizin</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Familienpraxis</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Vorsorge</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Hausbesuche</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Akademische Lehrpraxis HHU Düsseldorf</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Doctolib</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Krefeld-Elfrath</span>
+        <span class="ticker-item ticker-sep">·</span>
+        <span class="ticker-item">Chirotherapie</span>
+        <span class="ticker-item ticker-sep">·</span>
+      </div>
+    </div>
+
+    <!-- ── SPRECHZEITEN ──────────────────────── -->
+    <section id="oeffnungszeiten" class="section" aria-labelledby="hours-heading">
+      <div class="wrap">
+        <p class="label">Sprechzeiten</p>
+        <h2 class="headline" id="hours-heading">
+          Wann wir für<br>Sie da sind.
+        </h2>
+
+        <!-- 3 white cards -->
+        <div class="hours-cards">
+
+          <!-- Card 1: Terminsprechstunde -->
+          <div class="hours-card">
+            <div class="live-indicator">
+              <span class="live-dot"></span>
+              <span class="live-label">Aktuell geschlossen</span>
+            </div>
+            <h3 class="hours-card-title">Terminsprechstunde</h3>
+            <div class="hours-card-rows">
+              <div class="hours-card-row">
+                <span class="hours-card-day">Mo – Fr</span>
+                <span class="hours-card-time">08:30 – 10:00 Uhr</span>
+              </div>
+              <div class="hours-card-row">
+                <span class="hours-card-day">Mo, Di, Do</span>
+                <span class="hours-card-time">16:00 – 17:00 Uhr</span>
+              </div>
+            </div>
+            <p class="hours-card-note">Buchbar über Doctolib</p>
+            <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer"
+               class="hours-card-link">Online buchen →</a>
+          </div>
+
+          <!-- Card 2: Offene Sprechstunde -->
+          <div class="hours-card">
+            <div class="live-indicator">
+              <span class="live-dot"></span>
+              <span class="live-label">Aktuell geschlossen</span>
+            </div>
+            <h3 class="hours-card-title">Offene Sprechstunde</h3>
+            <div class="hours-card-rows">
+              <div class="hours-card-row">
+                <span class="hours-card-day">Mo – Fr</span>
+                <span class="hours-card-time">10:00 – 11:00 Uhr</span>
+              </div>
+              <div class="hours-card-row">
+                <span class="hours-card-day">Mo, Di, Do</span>
+                <span class="hours-card-time">17:00 – 18:00 Uhr</span>
+              </div>
+            </div>
+            <p class="hours-card-note">Kein Termin notwendig</p>
+          </div>
+
+          <!-- Card 3: Infektsprechstunde -->
+          <div class="hours-card">
+            <div class="live-indicator">
+              <span class="live-dot"></span>
+              <span class="live-label">Aktuell geschlossen</span>
+            </div>
+            <h3 class="hours-card-title">Infektsprechstunde</h3>
+            <div class="hours-card-rows">
+              <div class="hours-card-row">
+                <span class="hours-card-day">Mo – Do</span>
+                <span class="hours-card-time">11:00 – 12:00 Uhr</span>
+              </div>
+            </div>
+            <p class="hours-card-note">Bitte FFP2-Maske mitbringen</p>
+          </div>
+
+        </div>
+
+        <!-- Schließzeiten -->
+        <div class="schliesszeiten" aria-label="Schließzeiten 2026">
+          <p class="schliesszeiten-label">Schließzeiten 2026</p>
+          <ul class="schliesszeiten-list">
+            <li class="schliesszeiten-item">
+              <span class="schliesszeiten-item-date">15. Mai</span>
+              <span class="schliesszeiten-item-type">Brückentag</span>
+            </li>
+            <li class="schliesszeiten-item">
+              <span class="schliesszeiten-item-date">5. Juni</span>
+              <span class="schliesszeiten-item-type">Brückentag</span>
+            </li>
+            <li class="schliesszeiten-item">
+              <span class="schliesszeiten-item-date">3. – 14. Juli</span>
+              <span class="schliesszeiten-item-type">Sommerurlaub</span>
+            </li>
+            <li class="schliesszeiten-item">
+              <span class="schliesszeiten-item-date">18. – 31. Dezember</span>
+              <span class="schliesszeiten-item-type">Jahreswechsel</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Notfall — call buttons -->
+        <div class="notfall-clean" role="note" aria-label="Notfallnummern">
+          <p class="notfall-clean-intro">Außerhalb der Öffnungszeiten</p>
+          <div class="notfall-btns">
+            <a href="tel:116117" class="notfall-btn">
+              <svg class="notfall-btn-icon" width="16" height="16" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="1.5"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.69a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <div class="notfall-btn-body">
+                <span class="notfall-btn-number">116 117</span>
+                <span class="notfall-btn-label">Kassenärztlicher Notdienst</span>
+              </div>
+            </a>
+            <a href="tel:112" class="notfall-btn">
+              <svg class="notfall-btn-icon" width="16" height="16" viewBox="0 0 24 24"
+                   fill="none" stroke="currentColor" stroke-width="1.5"
+                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.69a16 16 0 0 0 6 6l.94-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <div class="notfall-btn-body">
+                <span class="notfall-btn-number">112</span>
+                <span class="notfall-btn-label">Notarzt</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── ÜBER UNS ───────────────────────────── -->
+    <section id="arzt" class="about-section" aria-labelledby="about-heading">
+      <div class="about-inner">
+
+        <!-- Intro -->
+        <p class="about-label">Unser Team</p>
+        <h2 class="about-headline" id="about-heading">
+          Menschen, die für Ihre Gesundheit da sind.
+        </h2>
+        <p class="about-subtext">
+          Unser Team begleitet Patient:innen und ihre Familien seit über 20 Jahren
+          mit Herz, Erfahrung und echtem Interesse an jedem Menschen.
+          Medizin, die zuhört.
+        </p>
+
+        <!-- Team grid -->
+        <div class="about-team-grid">
+          <div class="about-member">
+            <div class="about-member-photo-wrap">
+              <img src="/images/arzt.png" alt="Dr. Frank van Dinther" class="about-member-photo" />
+            </div>
+            <div class="about-member-info">
+              <p class="about-member-name">Dr. Frank van Dinther</p>
+              <p class="about-member-title">Facharzt für Allgemeinmedizin</p>
+            </div>
+          </div>
+          <div class="about-member">
+            <div class="about-member-photo-wrap">
+              <img src="/images/team-vermeulen.png" alt="Astrid Vermeulen" class="about-member-photo" />
+            </div>
+            <div class="about-member-info">
+              <p class="about-member-name">Astrid Vermeulen</p>
+              <p class="about-member-title">Medizinische Fachangestellte</p>
+            </div>
+          </div>
+          <div class="about-member">
+            <div class="about-member-photo-wrap">
+              <img src="/images/Bianka.png" alt="Bianka Gröters" class="about-member-photo" />
+            </div>
+            <div class="about-member-info">
+              <p class="about-member-name">Bianka Gröters</p>
+              <p class="about-member-title">Medizinische Fachangestellte</p>
+            </div>
+          </div>
+          <div class="about-member">
+            <div class="about-member-photo-wrap">
+              <img src="/images/denise.png" alt="Denise Gerhards-Hamm" class="about-member-photo" />
+            </div>
+            <div class="about-member-info">
+              <p class="about-member-name">Denise Gerhards-Hamm</p>
+              <p class="about-member-title">Medizinische Fachangestellte</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats bar -->
+        <div class="about-stats">
+          <div class="about-stat">
+            <p class="about-stat-num">30+</p>
+            <p class="about-stat-lbl">Jahre Praxiserfahrung</p>
+          </div>
+          <div class="about-stat">
+            <p class="about-stat-num">HHU</p>
+            <p class="about-stat-lbl">Akademische Lehrpraxis der Heinrich-Heine-Universität Düsseldorf</p>
+          </div>
+          <div class="about-stat">
+            <p class="about-stat-num">100%</p>
+            <p class="about-stat-lbl">Inklusiv — jeder Mensch ist willkommen</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── LEISTUNGEN ─────────────────────────── -->
+    <section id="leistungen" class="section" aria-labelledby="leistungen-heading">
+      <div class="wrap">
+        <p class="label">Leistungen</p>
+        <h2 class="headline" id="leistungen-heading">
+          Was wir für<br>Sie leisten.
+        </h2>
+
+        <div role="list">
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="ac-1" id="ac-1-btn">
+              <span class="accordion-trigger-name">Allgemeinmedizin & Hausarzt</span>
+              <span class="accordion-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="accordion-body" id="ac-1" role="region" aria-labelledby="ac-1-btn">
+              <div class="accordion-body-inner">
+                <ul class="accordion-list">
+                  <li>Akutversorgung und chronische Erkrankungen</li>
+                  <li>Blutabnahme und Laboruntersuchungen</li>
+                  <li>Krankschreibungen und Atteste</li>
+                  <li>Überweisungen und Koordination von Fachärzten</li>
+                  <li>Hausbesuche nach Vereinbarung</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="ac-2" id="ac-2-btn">
+              <span class="accordion-trigger-name">Vorsorge & Check-up</span>
+              <span class="accordion-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="accordion-body" id="ac-2" role="region" aria-labelledby="ac-2-btn">
+              <div class="accordion-body-inner">
+                <ul class="accordion-list">
+                  <li>Gesundheits-Check-up ab 35 Jahren (GKV)</li>
+                  <li>Krebsfrüherkennung</li>
+                  <li>Jugendgesundheitsuntersuchung J1</li>
+                  <li>Impfberatung und Schutzimpfungen</li>
+                  <li>Betriebliche Gesundheitsvorsorge</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="ac-3" id="ac-3-btn">
+              <span class="accordion-trigger-name">Chirotherapie & Manuelle Medizin</span>
+              <span class="accordion-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="accordion-body" id="ac-3" role="region" aria-labelledby="ac-3-btn">
+              <div class="accordion-body-inner">
+                <ul class="accordion-list">
+                  <li>Manuelle Therapie bei Wirbelsäulenbeschwerden</li>
+                  <li>Blockierungen der Gelenke lösen</li>
+                  <li>Rücken-, Nacken- und Schulterschmerzen</li>
+                  <li>Sportmedizinische Behandlung</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="ac-4" id="ac-4-btn">
+              <span class="accordion-trigger-name">Diagnostik</span>
+              <span class="accordion-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="accordion-body" id="ac-4" role="region" aria-labelledby="ac-4-btn">
+              <div class="accordion-body-inner">
+                <ul class="accordion-list">
+                  <li>EKG (Ruhe- und Belastungs-EKG)</li>
+                  <li>Lungenfunktionstest (Spirometrie)</li>
+                  <li>Ultraschall (Abdomen, Schilddrüse)</li>
+                  <li>Langzeit-EKG und Langzeit-Blutdruckmessung</li>
+                  <li>Labordiagnostik</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="ac-5" id="ac-5-btn">
+              <span class="accordion-trigger-name">Reise- & Sportmedizin</span>
+              <span class="accordion-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="accordion-body" id="ac-5" role="region" aria-labelledby="ac-5-btn">
+              <div class="accordion-body-inner">
+                <ul class="accordion-list">
+                  <li>Reiseimpfungen und Reiseberatung</li>
+                  <li>Malariaprophylaxe</li>
+                  <li>Sportmedizinische Tauglichkeitsuntersuchungen</li>
+                  <li>Tauchtauglichkeit</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-trigger" aria-expanded="false" aria-controls="ac-6" id="ac-6-btn">
+              <span class="accordion-trigger-name">Kleine Chirurgie & Wundversorgung</span>
+              <span class="accordion-icon" aria-hidden="true">+</span>
+            </button>
+            <div class="accordion-body" id="ac-6" role="region" aria-labelledby="ac-6-btn">
+              <div class="accordion-body-inner">
+                <ul class="accordion-list">
+                  <li>Wundversorgung und Verbandswechsel</li>
+                  <li>Entfernung von Hautveränderungen</li>
+                  <li>Nahtversorgung</li>
+                  <li>Entfernung von Fremdkörpern</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 40px;">
+          <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer" class="btn-doc">
+            Termin vereinbaren
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FÜR STUDIERENDE ───────────────────── -->
+    <section id="studierende" aria-labelledby="students-heading">
+      <div class="students-wrap">
+        <div class="students-card">
+
+          <div class="studierende-inner">
+
+            <!-- Left: Text -->
+            <div>
+              <p class="students-label">Für Studierende &amp; Weiterzubildende</p>
+              <h2 class="students-headline" id="students-heading">
+                Lernen, wo Medizin gelebt wird.
+              </h2>
+              <p class="students-subtext">
+                Diese Praxis ist Akademische Lehrpraxis des Instituts für Allgemeinmedizin (IFAM)
+                der Heinrich-Heine-Universität Düsseldorf und Weiterbildungspraxis der Ärztekammer
+                Nordrhein. Medizinstudierende und angehende Fachärzt:innen sind herzlich willkommen.
+              </p>
+            </div>
+
+            <!-- Right: Downloads -->
+            <div>
+              <p class="students-docs-label">Materialien &amp; Dokumente</p>
+
+          <a href="#" class="students-doc-item" aria-label="Informationsblatt PJ (PDF, folgt)">
+            <div class="students-doc-left">
+              <svg class="students-doc-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <rect x="3" y="1" width="8" height="11" rx="1" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M5 5h4M5 7.5h4M5 10h2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M11 4l2 2v8a1 1 0 01-1 1H4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              <div class="students-doc-meta">
+                <span class="students-doc-name">Informationsblatt PJ</span>
+                <span class="students-doc-tag">PDF · folgt</span>
+              </div>
+            </div>
+            <svg class="students-doc-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 3v7M5 7l3 3 3-3M3 13h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </a>
+
+          <a href="#" class="students-doc-item" aria-label="Bewerbungsformular (PDF, folgt)">
+            <div class="students-doc-left">
+              <svg class="students-doc-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <rect x="3" y="1" width="8" height="11" rx="1" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M5 5h4M5 7.5h4M5 10h2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M11 4l2 2v8a1 1 0 01-1 1H4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              <div class="students-doc-meta">
+                <span class="students-doc-name">Bewerbungsformular</span>
+                <span class="students-doc-tag">PDF · folgt</span>
+              </div>
+            </div>
+            <svg class="students-doc-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 3v7M5 7l3 3 3-3M3 13h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </a>
+
+          <a href="#" class="students-doc-item" aria-label="Lernzielkatalog (PDF, folgt)">
+            <div class="students-doc-left">
+              <svg class="students-doc-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <rect x="3" y="1" width="8" height="11" rx="1" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M5 5h4M5 7.5h4M5 10h2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M11 4l2 2v8a1 1 0 01-1 1H4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+              <div class="students-doc-meta">
+                <span class="students-doc-name">Lernzielkatalog</span>
+                <span class="students-doc-tag">PDF · folgt</span>
+              </div>
+            </div>
+            <svg class="students-doc-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 3v7M5 7l3 3 3-3M3 13h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </a>
+
+            </div><!-- /right column -->
+          </div><!-- /studierende-inner -->
+
+          <!-- CTA -->
+          <div class="students-cta">
+            <p class="students-cta-text">
+              Fragen zur Lehrpraxis oder zum Weiterbildungsprogramm?
+            </p>
+            <a href="mailto:info@praxis-vandinther.de" class="students-cta-btn">
+              Kontakt aufnehmen
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── KONTAKT ────────────────────────────── -->
+    <section id="kontakt" class="contact-section" aria-labelledby="contact-heading">
+      <div class="contact-inner">
+
+        <p class="contact-label">Kontakt</p>
+        <h2 class="contact-headline" id="contact-heading">So erreichen Sie uns.</h2>
+
+        <div class="contact-grid">
+
+          <!-- Left: Kontaktdaten -->
+          <div class="contact-card">
+            <div>
+              <p class="contact-praxis-primary">Praxis für Allgemeinmedizin</p>
+              <p class="contact-praxis-secondary">Frank van Dinther</p>
+              <p class="contact-addr-text">Neukirchener Straße 5<br>47829 Krefeld-Elfrath</p>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <a href="tel:+492151478989" class="contact-row">
+                <svg class="contact-row-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.09 10.8 19.79 19.79 0 011.07 2.18 2 2 0 013.07 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/>
+                </svg>
+                02151 – 478 989
+              </a>
+              <span class="contact-row contact-row-fax">
+                <svg class="contact-row-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                  <polyline points="6 4 6 2 18 2 18 4"/><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M8 16h8M8 12h2"/>
+                </svg>
+                02151 – 475 594
+              </span>
+              <a href="mailto:info@praxis-vandinther.de" class="contact-row contact-row-email">
+                <svg class="contact-row-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                  <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/>
+                </svg>
+                info@praxis-vandinther.de
+              </a>
+            </div>
+
+            <hr class="contact-divider"/>
+
+            <div>
+              <p class="contact-doctolib-label">Termin online buchen</p>
+              <a href={DOCTOLIB_URL} target="_blank" rel="noopener noreferrer"
+                 class="contact-doctolib-btn">
+                Jetzt Termin vereinbaren
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: Map -->
+          <div class="contact-map-card">
+            <iframe
+              src="https://www.openstreetmap.org/export/embed.html?bbox=6.5620%2C51.3480%2C6.5920%2C51.3640&layer=mapnik&marker=51.3559%2C6.5770"
+              loading="lazy"
+              title="Praxis van Dinther auf der Karte"
+              aria-label="Karte: Neukirchener Straße 5, 47829 Krefeld"
+            ></iframe>
+            <a href="https://maps.google.com/?q=Neukirchener+Straße+5,+47829+Krefeld"
+               target="_blank" rel="noopener noreferrer" class="contact-map-footer">
+              In Google Maps öffnen →
+            </a>
+          </div>
+
+        </div>
+
+        <!-- ÖPNV bar -->
+        <div class="contact-oepnv">
+          <svg class="contact-oepnv-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="13" rx="2"/><path d="M3 13h18M8 18l-2 3M16 18l2 3M12 16v2"/><circle cx="7.5" cy="16.5" r="0.5" fill="currentColor"/><circle cx="16.5" cy="16.5" r="0.5" fill="currentColor"/>
+          </svg>
+          <div class="contact-oepnv-text">
+            <p class="contact-oepnv-title">Öffentliche Anbindung</p>
+            <p class="contact-oepnv-detail">Straßenbahn Linie 042 · Bus Linie 058 · Haltestelle: Neukirchener Straße</p>
+          </div>
+          <a href="https://maps.google.com/?q=Neukirchener+Straße+5,+47829+Krefeld&travelmode=transit"
+             target="_blank" rel="noopener noreferrer" class="contact-oepnv-link">
+            Route planen →
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <p class="footer-copy">© 2026 Praxis van Dinther</p>
+      <ul class="footer-links">
+        <li><a href="/impressum">Impressum</a></li>
+        <li><a href="/datenschutz">Datenschutz</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Canvas organic background ─────────────────────────────── */
+    (function () {
+      const canvas = document.getElementById('hero-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let t = 0;
+      let raf;
+      let W, H;
+
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = canvas.offsetWidth;
+        H = canvas.offsetHeight;
+        canvas.width  = W * dpr;
+        canvas.height = H * dpr;
+        ctx.scale(dpr, dpr);
+      }
+
+      function blob(cx, cy, rx, ry, nPts, phase, spd) {
+        const pts = [];
+        for (let i = 0; i < nPts; i++) {
+          const a = (i / nPts) * Math.PI * 2;
+          const n1 = Math.sin(a * 2 + t * spd + phase)       * 0.31;
+          const n2 = Math.cos(a * 3 + t * spd * 0.65 + phase * 1.4) * 0.18;
+          const n3 = Math.sin(a * 7 + t * spd * 0.28)        * 0.07;
+          const noise = n1 + n2 + n3;
+          pts.push({
+            x: cx + Math.cos(a) * rx * (1 + noise),
+            y: cy + Math.sin(a) * ry * (1 + noise),
+          });
+        }
+        const l = pts.length;
+        ctx.beginPath();
+        ctx.moveTo((pts[l-1].x + pts[0].x) / 2, (pts[l-1].y + pts[0].y) / 2);
+        for (let i = 0; i < l; i++) {
+          const p = pts[i], q = pts[(i + 1) % l];
+          ctx.quadraticCurveTo(p.x, p.y, (p.x + q.x) / 2, (p.y + q.y) / 2);
+        }
+        ctx.closePath();
+      }
+
+      function radGrad(cx, cy, r, c0, c1) {
+        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+        g.addColorStop(0, c0);
+        g.addColorStop(1, c1);
+        return g;
+      }
+
+      function frame() {
+        ctx.fillStyle = '#0d1a10';
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.globalCompositeOperation = 'screen';
+
+        /* blob 1 — large deep forest pool, left-centre */
+        ctx.globalAlpha = 0.65;
+        blob(W * 0.22, H * 0.52, W * 0.44, H * 0.52, 14, 0.0, 0.12);
+        ctx.fillStyle = radGrad(W*0.22, H*0.52, W*0.44, '#2e6842', '#091a0e');
+        ctx.fill();
+
+        /* blob 2 — medium green, right-centre */
+        ctx.globalAlpha = 0.55;
+        blob(W * 0.74, H * 0.42, W * 0.36, H * 0.44, 12, 2.1, 0.17);
+        ctx.fillStyle = radGrad(W*0.74, H*0.42, W*0.36, '#245238', '#061510');
+        ctx.fill();
+
+        /* blob 3 — warm mid-green, bottom */
+        ctx.globalAlpha = 0.45;
+        blob(W * 0.5, H * 0.82, W * 0.3, H * 0.32, 10, 4.4, 0.22);
+        ctx.fillStyle = radGrad(W*0.5, H*0.82, W*0.3, '#3a7a52', '#0a1e12');
+        ctx.fill();
+
+        /* blob 4 — amber/gold accent, top-right */
+        ctx.globalAlpha = 0.35;
+        blob(W * 0.68, H * 0.2, W * 0.22, H * 0.26, 10, 1.0, 0.14);
+        ctx.fillStyle = radGrad(W*0.68, H*0.2, W*0.22, '#c8a050', '#3a2408');
+        ctx.fill();
+
+        /* blob 5 — very dark green mass, top-left */
+        ctx.globalAlpha = 0.40;
+        blob(W * 0.12, H * 0.18, W * 0.28, H * 0.3, 10, 3.2, 0.1);
+        ctx.fillStyle = radGrad(W*0.12, H*0.18, W*0.28, '#1a4028', '#060f09');
+        ctx.fill();
+
+        /* blob 6 — warm amber/gold, centre-left, hsl(35,60%,25%) */
+        ctx.globalAlpha = 0.28;
+        blob(W * 0.35, H * 0.65, W * 0.26, H * 0.30, 11, 5.5, 0.09);
+        ctx.fillStyle = radGrad(W*0.35, H*0.65, W*0.26, 'hsl(35,60%,30%)', 'hsl(35,60%,8%)');
+        ctx.fill();
+
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = 1;
+
+        t += 0.004;
+        raf = requestAnimationFrame(frame);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+      frame();
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) cancelAnimationFrame(raf);
+        else { t += 0; frame(); }
+      });
+    })();
+
+    /* ── Nav scroll state ───────────────────────────────────────── */
+    (function () {
+      const nav    = document.getElementById('nav');
+      const hero   = document.querySelector('.hero');
+      if (!nav || !hero) return;
+      function check() {
+        const threshold = hero.offsetHeight - 80;
+        nav.classList.toggle('scrolled', window.scrollY > threshold);
+      }
+      window.addEventListener('scroll', check, { passive: true });
+      check();
+    })();
+
+    /* ── Mobile burger ──────────────────────────────────────────── */
+    (function () {
+      const burger    = document.getElementById('burger');
+      const mobileNav = document.getElementById('mobile-nav');
+      if (!burger || !mobileNav) return;
+
+      burger.addEventListener('click', () => {
+        const open = burger.getAttribute('aria-expanded') === 'true';
+        burger.setAttribute('aria-expanded', String(!open));
+        mobileNav.classList.toggle('open', !open);
+        document.body.style.overflow = open ? '' : 'hidden';
+      });
+
+      mobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          burger.setAttribute('aria-expanded', 'false');
+          mobileNav.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      });
+    })();
+
+    /* ── Accordion ──────────────────────────────────────────────── */
+    (function () {
+      document.querySelectorAll('.accordion-trigger').forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          const expanded = trigger.getAttribute('aria-expanded') === 'true';
+          const bodyId   = trigger.getAttribute('aria-controls');
+          const body     = document.getElementById(bodyId);
+
+          document.querySelectorAll('.accordion-trigger').forEach(t => {
+            if (t !== trigger) {
+              t.setAttribute('aria-expanded', 'false');
+              const bid = t.getAttribute('aria-controls');
+              document.getElementById(bid)?.classList.remove('open');
+            }
+          });
+
+          trigger.setAttribute('aria-expanded', String(!expanded));
+          body?.classList.toggle('open', !expanded);
+        });
+      });
+    })();
+
+    /* ── Cards headline scroll reveal ──────────────────────────── */
+    (function () {
+      const headline = document.querySelector('.cards-headline');
+      if (!headline) return;
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        });
+      }, { threshold: 0.2 });
+      obs.observe(headline);
+    })();
+
+    /* ── Live hours indicator ───────────────────────────────────── */
+    (function () {
+      const now = new Date();
+      const day = now.getDay();
+      const mins = now.getHours() * 60 + now.getMinutes();
+      const isWeekday = day >= 1 && day <= 5;
+      const isMTuTh = [1,2,4].includes(day);
+      const hours = {
+        termin: isWeekday && ((mins >= 510 && mins < 600) ||
+                (isMTuTh && mins >= 960 && mins < 1020)),
+        offen:  isWeekday && ((mins >= 600 && mins < 660) ||
+                (isMTuTh && mins >= 1020 && mins < 1080)),
+        infekt: day >= 1 && day <= 4 && mins >= 660 && mins < 720
+      };
+      document.querySelectorAll('.hours-card').forEach((card, i) => {
+        const key = ['termin','offen','infekt'][i];
+        const dot   = card.querySelector('.live-dot');
+        const label = card.querySelector('.live-label');
+        if (!dot || !label) return;
+        if (hours[key]) {
+          dot.style.background  = '#22C55E';
+          label.textContent     = 'Jetzt geöffnet';
+          label.style.color     = '#22C55E';
+        } else {
+          dot.style.background  = '#ccc';
+          label.textContent     = 'Aktuell geschlossen';
+          label.style.color     = '#999';
+        }
+      });
+    })();
+
+    /* ── Feature cards: blur-to-sharp reveal ───────────────────── */
+    window.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.feature-card');
+      cards.forEach((card, i) => {
+        card.style.opacity   = '0';
+        card.style.filter    = 'blur(16px)';
+        card.style.transform = 'translateY(32px)';
+        card.style.willChange = 'transform, opacity, filter';
+        card.style.transition = `opacity 800ms cubic-bezier(0.16,1,0.3,1) ${i*150}ms,
+          filter 800ms cubic-bezier(0.16,1,0.3,1) ${i*150}ms,
+          transform 800ms cubic-bezier(0.16,1,0.3,1) ${i*150}ms`;
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity   = '1';
+            entry.target.style.filter    = 'blur(0)';
+            entry.target.style.transform = 'translateY(0)';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      cards.forEach(card => observer.observe(card));
+    });
+  </script>
+</body>
+</html>
