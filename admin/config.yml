@@ -1,0 +1,41 @@
+backend:
+  name: github
+  repo: kiri-deluxe/praxis-vandinther
+  branch: main
+  base_url: https://sveltia-cms-auth.pages.dev
+media_folder: images
+public_folder: /images
+collections:
+  - name: "settings"
+    label: "Einstellungen"
+    files:
+      - name: "opening_hours"
+        label: "Öffnungszeiten"
+        file: "content/opening-hours.json"
+        fields:
+          - {label: "Terminsprechstunde Mo-Fr", name: "termin_mofr", widget: "string"}
+          - {label: "Terminsprechstunde Mo/Di/Do", name: "termin_modido", widget: "string"}
+          - {label: "Offene Sprechstunde Mo-Fr", name: "offen_mofr", widget: "string"}
+          - {label: "Offene Sprechstunde Mo/Di/Do", name: "offen_modido", widget: "string"}
+          - {label: "Infektsprechstunde", name: "infekt", widget: "string"}
+      - name: "closings"
+        label: "Schließzeiten"
+        file: "content/closings.json"
+        fields:
+          - label: "Schließzeiten"
+            name: "termine"
+            widget: "list"
+            fields:
+              - {label: "Datum", name: "datum", widget: "string"}
+              - {label: "Beschreibung", name: "beschreibung", widget: "string"}
+      - name: "downloads"
+        label: "Dokumente für Studierende"
+        file: "content/downloads.json"
+        fields:
+          - label: "Dokumente"
+            name: "dokumente"
+            widget: "list"
+            fields:
+              - {label: "Titel", name: "titel", widget: "string"}
+              - {label: "Beschreibung", name: "beschreibung", widget: "string"}
+              - {label: "PDF", name: "datei", widget: "file"}

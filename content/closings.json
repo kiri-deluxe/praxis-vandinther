@@ -1,8 +1,8 @@
 {
   "termine": [
-    { "datum": "15. Mai 2026", "beschreibung": "Brückentag" },
-    { "datum": "5. Juni 2026", "beschreibung": "Brückentag" },
-    { "datum": "3. – 14. Juli 2026", "beschreibung": "Sommerurlaub" },
-    { "datum": "18. – 31. Dezember 2026", "beschreibung": "Jahreswechsel" }
+    {"datum": "15. Mai 2026", "beschreibung": "Brückentag"},
+    {"datum": "5. Juni 2026", "beschreibung": "Brückentag"},
+    {"datum": "3. – 14. Juli 2026", "beschreibung": "Sommerurlaub"},
+    {"datum": "18. – 31. Dezember 2026", "beschreibung": "Jahreswechsel"}
   ]
 }
