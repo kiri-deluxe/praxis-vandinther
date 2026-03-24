@@ -1,0 +1,69 @@
+backend:
+  name: github
+  repo: kiri-deluxe/praxis-vandinther
+  branch: main
+  base_url: https://sveltia-cms-auth.pages.dev
+media_folder: public/images
+public_folder: /images
+collections:
+  - name: "settings"
+    label: "Einstellungen"
+    files:
+      - name: "opening_hours"
+        label: "Öffnungszeiten"
+        file: "content/opening-hours.json"
+        fields:
+          - label: "Terminsprechstunde Mo-Fr"
+            name: "termin_mofr"
+            widget: "string"
+            default: "08:30 – 10:00 Uhr"
+          - label: "Terminsprechstunde Mo/Di/Do"
+            name: "termin_modido"
+            widget: "string"
+            default: "16:00 – 17:00 Uhr"
+          - label: "Offene Sprechstunde Mo-Fr"
+            name: "offen_mofr"
+            widget: "string"
+            default: "10:00 – 11:00 Uhr"
+          - label: "Offene Sprechstunde Mo/Di/Do"
+            name: "offen_modido"
+            widget: "string"
+            default: "17:00 – 18:00 Uhr"
+          - label: "Infektsprechstunde"
+            name: "infekt"
+            widget: "string"
+            default: "11:00 – 12:00 Uhr"
+      - name: "closings"
+        label: "Schließzeiten"
+        file: "content/closings.json"
+        fields:
+          - label: "Schließzeiten"
+            name: "termine"
+            widget: "list"
+            fields:
+              - { label: "Datum", name: "datum", widget: "string" }
+              - { label: "Beschreibung", name: "beschreibung", widget: "string" }
+      - name: "leistungen"
+        label: "Leistungen"
+        file: "content/leistungen.json"
+        fields:
+          - label: "Kategorien"
+            name: "kategorien"
+            widget: "list"
+            fields:
+              - { label: "Kategorie", name: "titel", widget: "string" }
+              - label: "Leistungen"
+                name: "items"
+                widget: "list"
+                field: { label: "Leistung", name: "item", widget: "string" }
+      - name: "downloads"
+        label: "Dokumente für Studierende"
+        file: "content/downloads.json"
+        fields:
+          - label: "Dokumente"
+            name: "dokumente"
+            widget: "list"
+            fields:
+              - { label: "Titel", name: "titel", widget: "string" }
+              - { label: "Beschreibung", name: "beschreibung", widget: "string" }
+              - { label: "PDF Datei", name: "datei", widget: "file" }
